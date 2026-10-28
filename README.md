@@ -9,7 +9,7 @@ A modular Doctor Appointment Booking System designed and implemented using model
 | Student ID | Full Name | Assigned Task | Branch | Pull Request Link |
 |---|---|---|---|---|
 | 20240149 | Joy Magdy | Use Cases (Student 1) | `Documentation` | *[Pending PR]* |
-| 20240149 | Joy Magdy | Class Diagram (Student 2) | `class-diagram` | *[Pending PR]* |
+| 20240149 | Joy Magdy | Class Diagram (Student 2) | `Class-Diagrams` | *[Pending PR]* |
 | 20240094 | Andrew Remon | Sequence Diagram (Student 3) | `sequence-diagram` | *[Pending PR]* |
 | 20240094 | Andrew Remon | Implementation (Student 4) | `implementation` | *[Pending PR]* |
 
