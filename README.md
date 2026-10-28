@@ -8,8 +8,8 @@ A modular Doctor Appointment Booking System designed and implemented using model
 
 | Student ID | Full Name | Assigned Task | Branch | Pull Request Link |
 |---|---|---|---|---|
-| 20240149 | Joy Magdy | Use Cases (Student 1) | `Documentation` | *[Pending PR]* |
-| 20240149 | Joy Magdy | Class Diagram (Student 2) | `Class-Diagrams` | *[Pending PR]* |
+| 20240149 | Joy Magdy | Use Cases (Student 1) | `Documentation` | `Merged (Reviewed & Approved)` |
+| 20240149 | Joy Magdy | Class Diagram (Student 2) | `Class-Diagrams` | `Merged (Reviewed & Approved)` |
 | 20240094 | Andrew Remon | Sequence Diagram (Student 3) | `sequence-diagram` | *[Pending PR]* |
 | 20240094 | Andrew Remon | Implementation (Student 4) | `implementation` | *[Pending PR]* |
 
@@ -23,6 +23,85 @@ A modular Doctor Appointment Booking System designed and implemented using model
 
 - **Chosen Value:** **$N = 3$**
 - **Rule Definition:** A single patient is permitted to have at most **3** upcoming appointments simultaneously. If a patient attempts to schedule a fourth upcoming appointment before completing or canceling earlier ones, the system automatically rejects the request.
+
+---
+
+## 📊 UML Diagrams
+
+### 1. Class Diagram (Student 2)
+The class diagram below represents the domain classes, attributes, methods, multiplicities, and relationships for the clinic system:
+
+```mermaid
+classDiagram
+    direction LR
+
+    class Patient {
+        -String patientId
+        -String name
+        -List~Appointment~ upcomingAppointments
+        +bookAppointment(doctor: Doctor, slot: TimeSlot) Appointment
+        +getUpcomingAppointmentsCount() int
+    }
+
+    class Doctor {
+        -String doctorId
+        -String name
+        -String specialty
+        -List~TimeSlot~ availableSlots
+        +getAvailableSlots() List~TimeSlot~
+        +confirmAppointment(appointment: Appointment, accept: bool) bool
+    }
+
+    class Appointment {
+        -String appointmentId
+        -String status
+        -Patient patient
+        -Doctor doctor
+        -TimeSlot slot
+        +submit() String
+        +cancel() bool
+        +getStatus() String
+    }
+
+    class TimeSlot {
+        -String slotId
+        -String dateTime
+        -bool isAvailable
+        +reserve() bool
+        +release() void
+        +getDateTime() String
+    }
+
+    %% Relationships and Multiplicities
+    Patient "1" --> "0..*" Appointment : books
+    Doctor "1" --> "0..*" Appointment : reviews
+    Doctor "1" *-- "1..*" TimeSlot : offers
+    Appointment "0..1" --> "1" TimeSlot : reserves
+```
+
+### 2. Use Case Diagram (Student 1)
+```mermaid
+flowchart LR
+    P([Patient])
+    D([Doctor])
+
+    subgraph ClinicSystem["Clinic Appointment System"]
+        UC1["UC1: View Doctor Availability"]
+        UC2["UC2: Book Appointment"]
+        UC3["UC3: Review Appointment Request"]
+        UC4["UC4: Enforce Limit (N=3)"]
+        UC5["UC5: Notify Decision"]
+    end
+
+    %% Actor Associations
+    P --- UC1
+    P --- UC2
+    UC3 --- D
+
+    %% Extensions
+    UC4 -.->|"«extend»"| UC2
+    UC5 -.->|"«extend»"| UC3
+```
 
 ---
 
