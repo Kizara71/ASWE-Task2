@@ -10,7 +10,7 @@ A modular Doctor Appointment Booking System designed and implemented using model
 |---|---|---|---|---|
 | 20240149 | Joy Magdy | Use Cases (Student 1) | `Documentation` | `Merged (Reviewed & Approved)` |
 | 20240149 | Joy Magdy | Class Diagram (Student 2) | `Class-Diagrams` | `Merged (Reviewed & Approved)` |
-| 20240094 | Andrew Remon | Sequence Diagram (Student 3) | `sequence-diagram` | *[Pending PR]* |
+| 20240094 | Andrew Remon | Sequence Diagram (Student 3) | `sequence-diagram` | `Merged (Reviewed & Approved)` |
 | 20240094 | Andrew Remon | Implementation (Student 4) | `implementation` | *[Pending PR]* |
 
 > **Note:** As per instructions for 2-member teams, tasks are shared between the two members, and Docker is optional (not required for teams of 2–4).
@@ -101,6 +101,57 @@ flowchart LR
     %% Extensions
     UC4 -.->|"«extend»"| UC2
     UC5 -.->|"«extend»"| UC3
+```
+
+## Appointment Booking - Sequence Diagram (Student 3)
+```mermaid
+sequenceDiagram
+    autonumber
+
+    actor P as Patient
+    participant D as Doctor
+    participant A as Appointment
+    participant T as TimeSlot
+
+    P->>D: getAvailableSlots()
+    D-->>P: List of available TimeSlots
+
+    P->>P: bookAppointment(doctor, slot)
+    P->>A: submit()
+
+    A->>P: getUpcomingAppointmentsCount()
+    P-->>A: count
+
+    alt count >= 3
+        A-->>P: Booking rejected (limit reached)
+    else count < 3
+        A->>T: Check isAvailable
+
+        alt Slot unavailable
+            T-->>A: false
+            A-->>P: Booking rejected (slot unavailable)
+        else Slot available
+            T-->>A: true
+            A->>T: reserve()
+            T-->>A: true
+
+            Note over A,D: Appointment status: Pending
+
+            A->>D: confirmAppointment(appointment, accept)
+
+            alt Doctor accepts
+                D-->>A: true
+                Note over A: Status: Confirmed
+                A-->>P: Appointment confirmed
+            else Doctor declines
+                D-->>A: false
+                Note over A: Status: Declined
+                A->>T: release()
+                T-->>A: Slot available again
+                A-->>P: Appointment declined
+            end
+        end
+    end
 ```
 
 ---
